@@ -1,0 +1,23 @@
+{
+  "name": "employee-tracker",
+  "version": "1.0.0",
+  "description": "An application in which a business owner can organize and plan their business. They will be able to view and manage the departments, roles, and employees in the company.",
+  "main": "employee.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/compedude29/Employee-Tracker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/compedude29/Employee-Tracker/issues"
+  },
+  "homepage": "https://github.com/compedude29/Employee-Tracker#readme",
+  "dependencies": {
+    "inquirer": "^7.0.1",
+    "mysql": "^2.17.1"
+  }
+}
