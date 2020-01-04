@@ -79,7 +79,7 @@ function addDepartment(){
         var query = "INSERT INTO department SET ?";
         connection.query(query, {name: answer.department}, function(err, res){
             if(err) throw err;
-            console.log.(res.affectedRows + " department inserted.\n");
+            console.log(res.affectedRows + " department inserted.\n");
             tasks();
         });
     });
@@ -96,9 +96,24 @@ function addRole(){
         var query = "INSERT INTO role SET ?";
         connection.query(query, {title: answer.role}, function(err, res){
             if(err) throw err;
-            console.log.(res.affectedRows + " role inserted.\n");
+            console.log(res.affectedRows + " role inserted.\n");
             tasks();
         });  
+    });
+
+    inquirer
+    .prompt({
+        name: "salary",
+        type: "input",
+        message: "Enter salary for role."
+    })
+    .then(function(answer){
+        var query = "UPDATE role SET ? WHERE ?";
+        connection.query(query, [{salary: answer.salary}, {title: answer.role}], function(err, res){
+            if(err) throw err;
+            console.log(res.affectedRows + " salary inserted.\n");
+            tasks();
+        });
     });
 }
 
@@ -113,8 +128,7 @@ function addEmployee(){
         var query = "INSERT INTO employee SET ?";
         connection.query(query, {first_name: answer.first}, function(err, res){
             if(err) throw err;
-            console.log.(res.affectedRows + " first name inserted.\n");
-            tasks();
+            console.log(res.affectedRows + " first name inserted.\n");
         });
     });
 
@@ -128,28 +142,37 @@ function addEmployee(){
         var query = "UPDATE employee SET ? WHERE ?";
         connection.query(query, [{last_name: answer.last}, {first_name: answer.first}], function(err, res){
             if(err) throw err;
-            console.log.(res.affectedRows + " last name inserted.\n");
+            console.log(res.affectedRows + " last name inserted.\n");
             tasks();
         });
     });
-
-
 }
 
 function viewDepartments(){
-    console.log("D");
-    tasks();
-
+    var query = "SELECT * FROM department";
+    connection.query(query, function(err, res){
+        if(err) throw err;
+        console.log(res);
+        tasks();
+    });
 }
 
 function viewRoles(){
-    console.log("E");
-    tasks();
+    var query = "SELECT * FROM role";
+    connection.query(query, function(err, res){
+        if(err) throw err;
+        console.log(res);
+        tasks();
+    });
 }
 
 function viewEmployees(){
-    console.log("F");
-    tasks();
+    var query = "SELECT * FROM employee";
+    connection.query(query, function(err, res){
+        if(err) throw err;
+        console.log(res);
+        tasks();
+    });
 }
 
 function updateRole(){
@@ -160,8 +183,25 @@ function updateRole(){
         message: "What employee would you like to update their role?"
     })
     .then(function(answer){
-        console.log("G");
-        tasks();
+        var query = "SELECT employee.first_name WHERE (employee.first_name = ?), role.title ";
+        query += "FROM employee INNER JOIN role ON (employee.role_id = role.id)";
+        connection.query(query, answer.update, function(err, res){
+            if(err) throw err;
+            inquirer
+            .prompt({
+                name: "new",
+                type: "input",
+                message: "Enter employee's new role id."
+            })
+            .then(function(answer){
+                var query = "UPDATE employee SET ? WHERE ?";
+                connection.query(query, [{role_id: answer.new}, {first_name: answer.update}], function(err, res){
+                    if(err) throw err;
+                    console.log(res.affectedRows + " role id inserted.\n");
+                });
+            });
+            tasks();
+        });
     });
 }
 
