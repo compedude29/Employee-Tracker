@@ -69,31 +69,64 @@ function tasks() {
 }
 
 function addDepartment(){
-    
+    inquirer
+    .prompt({
+        name: "department",
+        type: "input",
+        message: "Enter department to be added."
+    })
+    .then(function(answer){
+        console.log("A");
+    });
 }
 
 function addRole(){
-
+    inquirer
+    .prompt({
+        name: "role",
+        type: "input",
+        message: "Enter role to be added."
+    })
+    .then(function(answer){
+        console.log("B");
+    });
 }
 
-function addRole(){
-
+function addEmployee(){
+    inquirer
+    .prompt({
+        name: "employee",
+        type: "input",
+        message: "Enter employee to be added."
+    })
+    .then(function(answer){
+        console.log("C");
+    });
 }
 
 function viewDepartments(){
+    console.log("D");
 
 }
 
 function viewRoles(){
-
+    console.log("E");
 }
 
 function viewEmployees(){
-
+    console.log("F");
 }
 
 function updateRole(){
-    
+    inquirer
+    .prompt({
+        name: "update",
+        type: "input",
+        message: "What employee would you like to update their role?"
+    })
+    .then(function(answer){
+        console.log("G");
+    });
 }
 
 
