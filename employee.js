@@ -12,7 +12,7 @@ var connection = mysql.createConnection({
 connection.connect(function(err) {
     if (err) throw err;
     tasks();
-  });
+});
 
 function tasks() {
   inquirer
@@ -27,7 +27,7 @@ function tasks() {
           "View departments",
           "View roles",
           "View employees",
-          "Update roles",
+          "Update role",
           "Exit"
       ]   
   })
@@ -53,7 +53,7 @@ function tasks() {
         viewRoles();
         break;
 
-    case "View Employees":
+    case "View employees":
         viewEmployees();
         break;
 
@@ -75,8 +75,13 @@ function addDepartment(){
         type: "input",
         message: "Enter department to be added."
     })
-    .then(function(answer){
-        console.log("A");
+    .then(function(answer){ 
+        var query = "INSERT INTO department SET ?";
+        connection.query(query, {name: answer.department}, function(err, res){
+            if(err) throw err;
+            console.log.(res.affectedRows + " department inserted.\n");
+            tasks();
+        });
     });
 }
 
@@ -88,33 +93,63 @@ function addRole(){
         message: "Enter role to be added."
     })
     .then(function(answer){
-        console.log("B");
+        var query = "INSERT INTO role SET ?";
+        connection.query(query, {title: answer.role}, function(err, res){
+            if(err) throw err;
+            console.log.(res.affectedRows + " role inserted.\n");
+            tasks();
+        });  
     });
 }
 
 function addEmployee(){
     inquirer
     .prompt({
-        name: "employee",
+        name: "first",
         type: "input",
-        message: "Enter employee to be added."
+        message: "Enter first name to be added."
     })
     .then(function(answer){
-        console.log("C");
+        var query = "INSERT INTO employee SET ?";
+        connection.query(query, {first_name: answer.first}, function(err, res){
+            if(err) throw err;
+            console.log.(res.affectedRows + " first name inserted.\n");
+            tasks();
+        });
     });
+
+    inquirer
+    .prompt({
+        name: "last",
+        type: "input",
+        message: "Enter last name to be added."
+    })
+    .then(function(answer){
+        var query = "UPDATE employee SET ? WHERE ?";
+        connection.query(query, [{last_name: answer.last}, {first_name: answer.first}], function(err, res){
+            if(err) throw err;
+            console.log.(res.affectedRows + " last name inserted.\n");
+            tasks();
+        });
+    });
+
+
 }
 
 function viewDepartments(){
     console.log("D");
+    tasks();
 
 }
 
 function viewRoles(){
     console.log("E");
+    tasks();
 }
 
 function viewEmployees(){
     console.log("F");
+    tasks();
 }
 
 function updateRole(){
@@ -126,6 +161,7 @@ function updateRole(){
     })
     .then(function(answer){
         console.log("G");
+        tasks();
     });
 }
 
